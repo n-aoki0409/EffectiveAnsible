@@ -3,16 +3,16 @@
   tasks:
   - name: create directory
     file:
-       path: /home/vagrant/tmp
-       state: directory
-       owner: vagrant
-       group: vagrant
-       mode: 0755
+      path: /home/vagrant/tmp
+      state: directory
+      owner: vagrant
+      group: vagrant
+      mode: 0755
 
   - name: copy file
     copy:
-       src: /etc/hosts
-       dest: /home/vagrant/tmp/hosts
-       owner: vagrant
-       group: vagrant
-       mode: 0644
+      src: /etc/hosts
+      dest: /home/vagrant/tmp/hosts
+      owner: vagrant
+      group: vagrant
+      mode: 0644
