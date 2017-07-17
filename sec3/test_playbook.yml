@@ -1,0 +1,6 @@
+---
+- hosts: web_servers
+  sudo: yes
+  roles:
+    - httpd
+    - custom-roles/test
