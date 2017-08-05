@@ -1,0 +1,29 @@
+---
+# tasks file for ./roles/mariadb
+
+- name: check_install / Start firewalld
+  service:
+    name: firewalld
+    state: started
+    enabled: yes
+
+- name: check_install / Add enp0s8 interfaces for firewalld
+  firewalld:
+    zone: public
+    interface: enp0s8
+    permanent: yes
+    immediate: yes
+    state: enabled
+
+- name: check_install / Allow ports for firewalld
+  firewalld:
+    port: "{{ item }}"
+    permanent: yes
+    immediate: yes
+    state: enabled
+  with_items: "{{ mariadb_firewalld_port }}"
+
+- name: check_install / Remove current packages
+  yum:
+    name: mariadb-libs
+    state: absent
