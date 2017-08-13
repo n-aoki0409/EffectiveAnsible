@@ -1,0 +1,19 @@
+- name: Install Docker
+  yum:
+    name: docker
+    state: present
+
+- name: Setup configuration file
+  template:
+    src: docker.j2
+    dest: /etc/sysconfig/docker
+    owner: root
+    group: root
+    mode: 0644
+    backup: yes
+
+- name: Start Docker
+  service:
+    name: docker
+    state: started
+    enabled: yes
