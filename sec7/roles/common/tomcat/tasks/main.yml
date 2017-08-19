@@ -1,0 +1,52 @@
+---
+- name: Download tomcat
+  command: "wget -q -O /opt/apache-tomcat-{{ tomcat_version }}.tar.gz http://ftp.jaist.ac.jp/pub/apache/tomcat/tomcat-{{ tomcat_version.split('.')[0] }}/v{{ tomcat_version }}/bin/apache-tomcat-{{ tomcat_version }}.tar.gz"
+  args:
+    creates: /opt/apache-tomcat-{{ tomcat_version }}.tar.gz
+  register: tomcat_download
+
+- name: Unpack archive
+  command: "tar -zxf /opt/apache-tomcat-{{ tomcat_version }}.tar.gz -C /opt"
+  when: tomcat_download.changed
+
+- name: Create symlink
+  file:
+    src: /opt/apache-tomcat-{{ tomcat_version }}
+    dest: /opt/tomcat
+    state: link
+  when: tomcat_download.changed
+
+- name: Create setenv.sh
+  template:
+    src: setenv.sh.j2
+    dest: /opt/tomcat/bin/setenv.sh
+    mode: 0644
+
+- name: Create group tomcat
+  group:
+    name: "{{ tomcat_group }}"
+
+- name: Create user tomcat
+  user:
+    name: "{{ tomcat_user }}"
+    group: "{{ tomcat_group }}"
+
+- name: Change own tomcat
+  file:
+    path: /opt/apache-tomcat-{{ tomcat_version }}
+    state: directory
+    owner: "{{ tomcat_user }}"
+    group: "{{ tomcat_group }}"
+    recurse: yes
+
+- name: Create tomcat.service
+  template:
+    src: tomcat.service
+    dest: /etc/systemd/system/tomcat.service
+    mode: 0644
+
+- name: Start tomcat
+  systemd:
+    name: tomcat
+    state: started
+    enabled: yes

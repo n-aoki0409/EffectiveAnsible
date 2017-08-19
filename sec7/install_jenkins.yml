@@ -1,0 +1,8 @@
+---
+- name: Install Jenkins Server
+  hosts: jenkins_servers
+  become: true
+  roles:
+    - { role: common/java, tags: java }
+    - { role: common/tomcat, tags: tomcat }
+    - { role: jenkins, tags: jenkins }

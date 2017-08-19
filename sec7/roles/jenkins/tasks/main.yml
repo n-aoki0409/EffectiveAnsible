@@ -1,0 +1,6 @@
+---
+- name: Download jenkis.war
+  command: "wget -q -O /opt/tomcat/webapps/jenkins.war http://mirrors.jenkins.io/war-stable/latest/jenkins.war"
+  args:
+    creates: /opt/tomcat/webapps/jenkins.war
+  notify: Reload tomcat

@@ -1,0 +1,17 @@
+---
+- name: Download java
+  command: "wget -q -O /opt/jdk-{{ jdk_version.major }}u{{ jdk_version.up }}-linux-x64.tar.gz --no-check-certificate --no-cookies --header 'Cookie: oraclelicense=accept-securebackup-cookie' http://download.oracle.com/otn-pub/java/jdk/{{ jdk_version.major }}u{{ jdk_version.up }}-b01/090f390dda5b47b9b721c7dfaa008135/jdk-{{ jdk_version.major }}u{{ jdk_version.up }}-linux-x64.tar.gz"
+  args:
+    creates: /opt/jdk-{{ jdk_version.major }}u{{ jdk_version.up }}-linux-x64.tar.gz
+  register: jdk_download
+
+- name: Unpack archive
+  command: "tar -zxf /opt/jdk-{{ jdk_version.major }}u{{ jdk_version.up }}-linux-x64.tar.gz -C /opt"
+  when: jdk_download.changed
+
+- name: Create symlink
+  file:
+    src: /opt/jdk1.{{ jdk_version.major }}.0_{{ jdk_version.up }}
+    dest: /opt/java
+    state: link
+  when: jdk_download.changed
