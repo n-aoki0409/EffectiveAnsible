@@ -4,3 +4,7 @@
   args:
     creates: /opt/tomcat/webapps/jenkins.war
   notify: Restart tomcat
+
+- name: Install git
+  yum:
+    name: git
