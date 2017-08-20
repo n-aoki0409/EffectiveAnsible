@@ -41,7 +41,7 @@
 
 - name: Create tomcat.service
   template:
-    src: tomcat.service
+    src: tomcat.service.j2
     dest: /etc/systemd/system/tomcat.service
     mode: 0644
 
