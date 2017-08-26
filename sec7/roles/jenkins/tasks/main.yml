@@ -8,3 +8,24 @@
 - name: Install git
   yum:
     name: git
+
+- name: Install ipa-gothic-fonts
+  yum:
+    name: "{{ item }}"
+  with_items:
+    - ipa-gothic-fonts
+
+- name: Create fonts directory
+  file:
+    path: /opt/java/jre/lib/fonts/fallback
+    state: directory
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Create symlink for ttf
+  file:
+    src: /usr/share/fonts/ipa-gothic/ipag.ttf
+    dest: /opt/java/jre/lib/fonts/fallback/ipag.ttf
+    state: link
+  notify: Restart tomcat 
