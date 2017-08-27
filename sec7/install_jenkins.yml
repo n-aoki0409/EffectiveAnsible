@@ -3,6 +3,15 @@
   hosts: jenkins_servers
   become: true
   roles:
-    - { role: common/java, tags: java }
-    - { role: common/tomcat, tags: tomcat }
+    - { role: common, tags: common }
+    - { role: java, tags: java }
+    - { role: tomcat, tags: tomcat }
     - { role: jenkins, tags: jenkins }
+
+- name: Setup Jenkins Slaves
+  hosts: jenkins_slaves
+  become: true
+  roles:
+    - { role: common, tags: common }
+    - { role: java, tags: java }
+    - { role: jenkins-slave, tags: jenkins-slave }
