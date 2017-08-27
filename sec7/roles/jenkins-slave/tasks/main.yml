@@ -1,0 +1,33 @@
+---
+- name: Add jenkins group
+  group:
+    name: jenkins
+
+- name: Add jenkins user
+  user:
+    name: jenkins
+    createhome: yes
+    password: "{{ 'vagrant' | password_hash('sha512') }}"
+    shell: /bin/bash
+    group: jenkins
+
+- name: Create jenkins directory
+  file:
+    path: /var/jenkins
+    state: directory
+    owner: jenkins
+    group: jenkins
+    mode: 0755
+
+- name: Create /etc/profile.d/custom.sh
+  copy:
+    src: custom.sh
+    dest: /etc/profile.d/custom.sh
+    owner: root
+    group: root
+    mode: 0644
+  register: env_vars
+
+- name: Reload environment variables
+  command: source /etc/profile
+  when: env_vars.changed
