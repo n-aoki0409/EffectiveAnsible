@@ -5,10 +5,6 @@
     creates: /opt/tomcat/webapps/jenkins.war
   notify: Restart tomcat
 
-- name: Install git
-  yum:
-    name: git
-
 - name: Install ipa-gothic-fonts
   yum:
     name: "{{ item }}"
