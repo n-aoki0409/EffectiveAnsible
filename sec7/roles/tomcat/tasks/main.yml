@@ -1,6 +1,6 @@
 ---
 - name: Download tomcat
-  command: "wget -q -O /opt/apache-tomcat-{{ tomcat_version }}.tar.gz http://ftp.jaist.ac.jp/pub/apache/tomcat/tomcat-{{ tomcat_version.split('.')[0] }}/v{{ tomcat_version }}/bin/apache-tomcat-{{ tomcat_version }}.tar.gz"
+  command: "wget -q -O /opt/apache-tomcat-{{ tomcat_version }}.tar.gz https://archive.apache.org/dist/tomcat/tomcat-{{ tomcat_version.split('.')[0] }}/v{{ tomcat_version }}/bin/apache-tomcat-{{ tomcat_version }}.tar.gz"
   args:
     creates: /opt/apache-tomcat-{{ tomcat_version }}.tar.gz
   register: tomcat_download
