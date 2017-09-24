@@ -1,3 +1,3 @@
 ---
-- name: Debug pring
+- name: Debug print
   debug: msg="TEST OK"
