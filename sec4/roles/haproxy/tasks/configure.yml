@@ -11,7 +11,7 @@
     backup: yes
 
 - name: configure / Start haproxy service
-  service:
+  systemd:
     name: haproxy
     state: reloaded
     enabled: yes

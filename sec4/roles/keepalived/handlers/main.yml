@@ -5,11 +5,11 @@
   command: firewall-cmd --reload
 
 - name: Reload rsyslog
-  service:
+  systemd:
     name: rsyslog
     state: restarted
 
 - name: Reload keepalived
-  service:
+  systemd:
     name: keepalived
     state: reloaded
