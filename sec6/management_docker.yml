@@ -74,3 +74,10 @@
         tty: yes
         interactive: yes
       with_items: "{{ docker_hosts }}"
+
+- name: Test docker connection api
+  hosts: ansible-1
+  connection: docker
+  tasks:
+    - name: Test command
+      yum: name=sl state=latest
