@@ -4,8 +4,8 @@
   become: true
   roles:
     - { role: common, tags: common }
-    - { role: java, tags: java }
-    - { role: tomcat, tags: tomcat }
+    - { role: original/java, tags: java }
+    - { role: original/tomcat, tags: tomcat }
     - { role: jenkins, tags: jenkins }
 
 - name: Setup Jenkins Slaves
@@ -13,5 +13,5 @@
   become: true
   roles:
     - { role: common, tags: common }
-    - { role: java, tags: java }
+    - { role: original/java, tags: java }
     - { role: jenkins-slave, tags: jenkins-slave }
