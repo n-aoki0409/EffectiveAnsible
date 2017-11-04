@@ -1,0 +1,7 @@
+zk_version:
+  major: 3
+  minor: 4
+  build: 10
+
+zk_user: zookeeper
+zk_group: zookeeper

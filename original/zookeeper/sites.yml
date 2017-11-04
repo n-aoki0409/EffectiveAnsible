@@ -1,0 +1,7 @@
+---
+- name: Install Zookeeper
+  hosts: zookeeper
+  become: true
+  roles:
+    - { role: java, tags: java }
+    - { role: zookeeper, tags: zookeeper }

@@ -1,0 +1,74 @@
+---
+- name: Download zookeeper
+  command: "wget -q -O /opt/zookeeper-{{ zk_version.major }}.{{ zk_version.minor }}.{{ zk_version.build }}.tar.gz http://archive.apache.org/dist/zookeeper/zookeeper-{{ zk_version.major }}.{{ zk_version.minor }}.{{ zk_version.build }}/zookeeper-3.4.10.tar.gz"
+  args:
+    creates: /opt/zookeeper-{{ zk_version.major }}.{{ zk_version.minor }}.{{ zk_version.build }}.tar.gz
+  register: zk_download
+
+- name: Unpack archive
+  command: "tar -zxf /opt/zookeeper-{{ zk_version.major }}.{{ zk_version.minor }}.{{ zk_version.build }}.tar.gz -C /opt"
+  when: zk_download.changed
+
+- name: Create symlink
+  file:
+    src: /opt/zookeeper-{{ zk_version.major }}.{{ zk_version.minor }}.{{ zk_version.build }}
+    dest: /opt/zookeeper
+    state: link
+  when: zk_download.changed
+
+- name: Create group zookeeper
+  group:
+    name: "{{ zk_group }}"
+
+- name: Create user zookeeper
+  user:
+    name: "{{ zk_user }}"
+    group: "{{ zk_group }}"
+
+- name: Change own zookeeper
+  file:
+    path: /opt/zookeeper-{{ zk_version.major }}.{{ zk_version.minor }}.{{ zk_version.build }}
+    state: directory
+    owner: "{{ zk_user }}"
+    group: "{{ zk_group }}"
+    recurse: yes
+
+- name: Create zookeeper dataDir
+  file:
+    path: /var/zookeeper
+    state: directory
+    owner: "{{ zk_user }}"
+    group: "{{ zk_group }}"
+    mode: 0755
+
+- name: Create zookeeper logDir
+  file:
+    path: /var/log/zookeeper
+    state: directory
+    owner: "{{ zk_user }}"
+    group: "{{ zk_group }}"
+    mode: 0755
+
+- name: Create zoo.cfg
+  template:
+    src: zoo.cfg.j2
+    dest: /opt/zookeeper/conf/zoo.cfg
+    owner: "{{ zk_user }}"
+    group: "{{ zk_group }}"
+    mode: 0664
+
+- name: Create myid
+  template:
+    src: myid.j2
+    dest: /var/zookeeper/myid
+    owner: "{{ zk_user }}"
+    group: "{{ zk_group }}"
+    mode: 0664
+
+- name: Create log4j.properties
+  copy:
+    src: log4j.properties
+    dest: /opt/zookeeper/conf/log4j.properties
+    owner: "{{ zk_user }}"
+    group: "{{ zk_group }}"
+    mode: 0664
