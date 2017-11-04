@@ -16,12 +16,6 @@
     state: link
   when: tomcat_download.changed
 
-- name: Create setenv.sh
-  template:
-    src: setenv.sh.j2
-    dest: /opt/tomcat/bin/setenv.sh
-    mode: 0644
-
 - name: Create group tomcat
   group:
     name: "{{ tomcat_group }}"
@@ -39,10 +33,20 @@
     group: "{{ tomcat_group }}"
     recurse: yes
 
+- name: Create setenv.sh
+  template:
+    src: setenv.sh.j2
+    dest: /opt/tomcat/bin/setenv.sh
+    owner: "{{ tomcat_user }}"
+    group: "{{ tomcat_group }}"
+    mode: 0644
+
 - name: Create tomcat.service
   template:
     src: tomcat.service.j2
     dest: /etc/systemd/system/tomcat.service
+    owner: root
+    group: root
     mode: 0644
 
 - name: Start tomcat
