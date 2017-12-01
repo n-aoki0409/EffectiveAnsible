@@ -1,3 +1,4 @@
 jdk_version:
   major: 8
-  up: 144
+  up: 152
+  bin: 16

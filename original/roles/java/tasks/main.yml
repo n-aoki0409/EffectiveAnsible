@@ -1,6 +1,6 @@
 ---
 - name: Download java
-  command: "wget -q -O /opt/jdk-{{ jdk_version.major }}u{{ jdk_version.up }}-linux-x64.tar.gz --no-check-certificate --no-cookies --header 'Cookie: oraclelicense=accept-securebackup-cookie' http://download.oracle.com/otn-pub/java/jdk/{{ jdk_version.major }}u{{ jdk_version.up }}-b01/090f390dda5b47b9b721c7dfaa008135/jdk-{{ jdk_version.major }}u{{ jdk_version.up }}-linux-x64.tar.gz"
+  command: "wget -q -O /opt/jdk-{{ jdk_version.major }}u{{ jdk_version.up }}-linux-x64.tar.gz --no-check-certificate --no-cookies --header 'Cookie: oraclelicense=accept-securebackup-cookie' http://download.oracle.com/otn-pub/java/jdk/{{ jdk_version.major }}u{{ jdk_version.up }}-b{{ jdk_version.bin }}/aa0333dd3019491ca4f6ddbe78cdb6d0/jdk-{{ jdk_version.major }}u{{ jdk_version.up }}-linux-x64.tar.gz"
   args:
     creates: /opt/jdk-{{ jdk_version.major }}u{{ jdk_version.up }}-linux-x64.tar.gz
   register: jdk_download
@@ -15,3 +15,16 @@
     dest: /opt/java
     state: link
   when: jdk_download.changed
+
+- name: Install java.sh
+  copy:
+    src: java.sh
+    dest: /etc/profile.d/java.sh
+    owner: root
+    group: root
+    mode: 0644
+  register: java_env
+
+- name: Update java environment
+  shell: source /etc/profile
+  when: java_env.changed
